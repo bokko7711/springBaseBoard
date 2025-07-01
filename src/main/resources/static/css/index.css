@@ -1,0 +1,70 @@
+/* 기본 설정 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 40px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+/* 중앙 카드 스타일 */
+.vertical-group {
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+    width: 100%;
+    text-align: center;
+}
+
+/* 제목 */
+.vertical-group h1 {
+    margin-top: 0;
+    color: #2a7ae2;
+    font-size: 28px;
+}
+
+/* 버튼 스타일 */
+.vertical-group form button {
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: #2a7ae2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.vertical-group form button:hover {
+    background-color: #1c5fc0;
+}
+
+/* 링크 스타일 */
+.vertical-group a {
+    color: #2a7ae2;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.2s ease;
+}
+
+.vertical-group a:hover {
+    text-decoration: underline;
+    color: #1c5fc0;
+}
+
+/* 프로필 표시 영역 */
+#profile {
+    font-size: 16px;
+    color: #333;
+    padding: 10px;
+    border-radius: 6px;
+    background-color: #f4f6f8;
+}

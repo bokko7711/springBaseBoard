@@ -1,0 +1,62 @@
+/* 공통 설정 */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f9f9f9;
+    color: #333;
+    max-width: 600px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* 글쓰기 폼 */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: #ffffff;
+    padding: 30px 25px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* 레이블 */
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+
+/* 제목 input */
+input[type="text"] {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+}
+
+/* 본문 textarea */
+textarea {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    min-height: 150px;
+    resize: vertical;
+}
+
+/* 버튼 */
+button[type="submit"] {
+    align-self: flex-start;
+    padding: 10px 20px;
+    background-color: #2a7ae2;
+    color: white;
+    font-size: 14px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+    background-color: #1c5fc0;
+}

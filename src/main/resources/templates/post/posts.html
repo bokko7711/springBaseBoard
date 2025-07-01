@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Posts</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/posts.css}">
+    <script src="/js/posts.js" defer></script>
+</head>
+<body>
+<div class="container">
+  <a href="/index">go to index page</a>
+  <div id="search-area" style="margin-bottom: 15px;">
+      <input type="text" id="searchInput" placeholder="제목, 본문, 작성자로 검색">
+      <button onclick="searchPosts()">검색</button>
+      <button onclick="window.location.href=`/post/new`">
+          글쓰기
+      </button>
+  </div>
+  <div id="posts"></div>
+</div>
+</body>
+</html>
