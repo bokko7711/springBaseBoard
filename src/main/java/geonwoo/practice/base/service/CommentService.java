@@ -1,6 +1,6 @@
 package geonwoo.practice.base.service;
 
-import geonwoo.practice.base.domain.Comment;
+import geonwoo.practice.base.domain.Comments;
 import geonwoo.practice.base.domain.Post;
 import geonwoo.practice.base.dto.CommentUpdateDto;
 import geonwoo.practice.base.repository.CommentRepository;
@@ -18,25 +18,25 @@ public class CommentService {
 
     private final CommentRepository repository;
 
-    public Comment addNewComment(Comment comment) {
-        return repository.save(comment);
+    public Comments addNewComment(Comments comments) {
+        return repository.save(comments);
     }
 
-    public Optional<Comment> searchCommentById(Long id) {
+    public Optional<Comments> searchCommentById(Long id) {
         return repository.findById(id);
     }
 
-    public List<Comment> searchCommentsByPost(Post post) {
+    public List<Comments> searchCommentsByPost(Post post) {
         return repository.findByPost(post);
     }
 
     public void updateCommentById(Long id, CommentUpdateDto updateParam) {
-        Comment comment = repository.findById(id).orElseThrow();
-        comment.setContent(updateParam.getContent());
+        Comments comments = repository.findById(id).orElseThrow();
+        comments.setContent(updateParam.getContent());
     }
 
     public void deleteCommentById(Long id) {
-        Comment comment = repository.findById(id).orElseThrow();
-        repository.delete(comment);
+        Comments comments = repository.findById(id).orElseThrow();
+        repository.delete(comments);
     }
 }

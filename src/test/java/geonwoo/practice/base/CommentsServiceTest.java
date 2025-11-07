@@ -1,12 +1,12 @@
 package geonwoo.practice.base;
 
-import geonwoo.practice.base.domain.Comment;
+import geonwoo.practice.base.domain.Comments;
 import geonwoo.practice.base.domain.Member;
 import geonwoo.practice.base.domain.Post;
-import geonwoo.practice.base.repository.CommentRepository;
+import geonwoo.practice.base.dto.CommentUpdateDto;
 import geonwoo.practice.base.repository.MemberRepository;
-import geonwoo.practice.base.repository.PostDynamicQueryRepository;
 import geonwoo.practice.base.repository.PostRepository;
+import geonwoo.practice.base.service.CommentService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,41 +20,40 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 @Transactional
-public class CommentRepositoryTest {
-
-    @Autowired CommentRepository repository;
+public class CommentsServiceTest {
+    @Autowired CommentService service;
     @Autowired PostRepository postRepository;
     @Autowired MemberRepository memberRepository;
 
     @Test
-    public void create() {
+    public void 댓글쓰기() {
         //given
         Member member = new Member("asdf", "1234", "Gildong Hong", 20);
         Post post = new Post("hello", "my name is Gildong Hong", member);
-        Comment comment = new Comment("good", member, post);
+        Comments comments = new Comments("good", member, post);
 
         //when
         Member savedMember = memberRepository.save(member);
         Post savedPost = postRepository.save(post);
-        Comment savedComment = repository.save(comment);
+        Comments savedComments = service.addNewComment(comments);
 
         //then
-        assertThat(savedComment.getContent()).isEqualTo("good");
+        assertThat(savedComments.getContent()).isEqualTo("good");
     }
 
     @Test
-    public void read() {
+    public void 댓글하나조회() {
         //given
         Member member = new Member("asdf", "1234", "Gildong Hong", 20);
         Post post = new Post("hello", "my name is Gildong Hong", member);
-        Comment comment = new Comment("good", member, post);
-        memberRepository.save(member);
-        postRepository.save(post);
-        Comment savedComment = repository.save(comment);
+        Comments comments = new Comments("good", member, post);
+        Member savedMember = memberRepository.save(member);
+        Post savedPost = postRepository.save(post);
+        Comments savedComments = service.addNewComment(comments);
 
         //when
-        Optional<Comment> findComment = repository.findById(savedComment.getId());
-        Optional<Comment> noSuchComment = repository.findById(-1L);
+        Optional<Comments> findComment = service.searchCommentById(savedComments.getId());
+        Optional<Comments> noSuchComment = service.searchCommentById(-1L);
 
         //then
         assertThat(findComment.orElseThrow().getContent()).isEqualTo("good");
@@ -62,7 +61,7 @@ public class CommentRepositoryTest {
     }
 
     @Test
-    public void readByPost() {
+    public void 포스트의모든댓글조회() {
         //given
         Member member1 = new Member("asdf", "1234", "Gildong Hong", 20);
         Member member2 = new Member("asdfa", "12345", "Gildong Kim", 30);
@@ -70,9 +69,9 @@ public class CommentRepositoryTest {
         Post post1 = new Post("asdf", "1234", member1);
         Post post2 = new Post("asdfa", "12345", member2);
         Post post3 = new Post("asdfas", "123456", member3);
-        Comment comment1 = new Comment("good", member2, post1);
-        Comment comment2 = new Comment("welcome", member1, post1);
-        Comment comment3 = new Comment("blah blah", member1, post2);
+        Comments comments1 = new Comments("good", member2, post1);
+        Comments comments2 = new Comments("welcome", member1, post1);
+        Comments comments3 = new Comments("blah blah", member1, post2);
 
         //when
         memberRepository.save(member1);
@@ -81,30 +80,47 @@ public class CommentRepositoryTest {
         postRepository.save(post1);
         postRepository.save(post2);
         postRepository.save(post3);
-        repository.save(comment1);
-        repository.save(comment2);
-        repository.save(comment3);
+        service.addNewComment(comments1);
+        service.addNewComment(comments2);
+        service.addNewComment(comments3);
 
         //then
-        assertThat(repository.findByPost(post1).size()).isEqualTo(2);
-        assertThat(repository.findByPost(post2).size()).isEqualTo(1);
+        assertThat(service.searchCommentsByPost(post1).size()).isEqualTo(2);
+        assertThat(service.searchCommentsByPost(post2).size()).isEqualTo(1);
     }
 
-    //update는 serviceTest에서만 가능. 생략
-
     @Test
-    public void delete() {
+    public void 댓글수정() {
         //given
         Member member = new Member("asdf", "1234", "Gildong Hong", 20);
         Post post = new Post("hello", "my name is Gildong Hong", member);
-        Comment comment = new Comment("good", member, post);
-        memberRepository.save(member);
-        postRepository.save(post);
-        Comment savedComment = repository.save(comment);
+        Comments comments = new Comments("good", member, post);
+        Member savedMember = memberRepository.save(member);
+        Post savedPost = postRepository.save(post);
+        Comments savedComments = service.addNewComment(comments);
+        CommentUpdateDto updateParam = new CommentUpdateDto("better");
 
         //when
-        repository.delete(comment);
-        Optional<Comment> findComment = repository.findById(savedComment.getId());
+        service.updateCommentById(comments.getId(),updateParam);
+
+        //then
+        assertThat(service.searchCommentById(comments.getId()).orElseThrow().getContent())
+                .isEqualTo("better");
+    }
+
+    @Test
+    public void 댓글삭제() {
+        //given
+        Member member = new Member("asdf", "1234", "Gildong Hong", 20);
+        Post post = new Post("hello", "my name is Gildong Hong", member);
+        Comments comments = new Comments("good", member, post);
+        memberRepository.save(member);
+        postRepository.save(post);
+        Comments savedComments = service.addNewComment(comments);
+
+        //when
+        service.deleteCommentById(comments.getId());
+        Optional<Comments> findComment = service.searchCommentById(savedComments.getId());
 
         //then
         assertThatThrownBy(findComment::orElseThrow).isInstanceOf(NoSuchElementException.class);

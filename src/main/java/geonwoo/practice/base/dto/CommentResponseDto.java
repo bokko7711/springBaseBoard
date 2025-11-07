@@ -1,6 +1,6 @@
 package geonwoo.practice.base.dto;
 
-import geonwoo.practice.base.domain.Comment;
+import geonwoo.practice.base.domain.Comments;
 import lombok.Getter;
 
 @Getter
@@ -11,9 +11,9 @@ public class CommentResponseDto {
 
     public CommentResponseDto() { }
 
-    public CommentResponseDto(Comment comment) {
-        this.id = comment.getId();
-        this.content = comment.getContent();
-        this.author = comment.getAuthor().getName();
+    public CommentResponseDto(Comments comments) {
+        this.id = comments.getId();
+        this.content = comments.getContent();
+        this.author = comments.getAuthor().getName();
     }
 }

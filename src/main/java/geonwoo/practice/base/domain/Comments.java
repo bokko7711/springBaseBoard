@@ -8,7 +8,7 @@ import lombok.ToString;
 
 @Entity
 @Getter @Setter @ToString @EqualsAndHashCode
-public class Comment {
+public class Comments {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -21,9 +21,9 @@ public class Comment {
     //@JoinColumn(name = "post_id") //생략 가능
     private Post post;
 
-    public Comment() { }
+    public Comments() { }
 
-    public Comment(String content, Member author, Post post) {
+    public Comments(String content, Member author, Post post) {
         this.content = content;
         this.author = author;
         this.post = post;

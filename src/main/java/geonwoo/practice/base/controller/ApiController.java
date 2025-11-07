@@ -1,7 +1,7 @@
 package geonwoo.practice.base.controller;
 
 import geonwoo.practice.base.Constants;
-import geonwoo.practice.base.domain.Comment;
+import geonwoo.practice.base.domain.Comments;
 import geonwoo.practice.base.domain.Member;
 import geonwoo.practice.base.domain.Post;
 import geonwoo.practice.base.domain.UploadFile;
@@ -84,7 +84,7 @@ public class ApiController {
     }
 
     @PostMapping("/comment/new/{postId}")
-    public String addNewComment(@Valid @ModelAttribute Comment comment,
+    public String addNewComment(@Valid @ModelAttribute Comments comments,
                              BindingResult bindingResult,
                                 @PathVariable("postId") Long postId,
                              HttpServletRequest request) {
@@ -94,10 +94,10 @@ public class ApiController {
         if (session != null) {
             Long memberId = (Long) session.getAttribute(Constants.MEMBER_ID);
             Member author = memberService.searchMemberById(memberId).orElseThrow();
-            comment.setAuthor(author);
+            comments.setAuthor(author);
             Post post = postService.searchPostById(postId).orElseThrow();
-            comment.setPost(post);
-            commentService.addNewComment(comment);
+            comments.setPost(post);
+            commentService.addNewComment(comments);
         } else {
             log.info("cannot add comment : there is no author or post");
         }
@@ -116,8 +116,8 @@ public class ApiController {
         if (session != null) {
             Long memberId = (Long) session.getAttribute(Constants.MEMBER_ID);
             Member currentUser = memberService.searchMemberById(memberId).orElseThrow();
-            Comment comment = commentService.searchCommentById(commentId).orElseThrow();
-            if (currentUser == comment.getAuthor()) {
+            Comments comments = commentService.searchCommentById(commentId).orElseThrow();
+            if (currentUser == comments.getAuthor()) {
                 commentService.updateCommentById(commentId, updateParam);
             } else {
                 log.warn("cannot update : comment cannot be updated by wrong access (not author)");
@@ -137,8 +137,8 @@ public class ApiController {
         if (session != null) {
             Long memberId = (Long) session.getAttribute(Constants.MEMBER_ID);
             Member currentUser = memberService.searchMemberById(memberId).orElseThrow();
-            Comment comment = commentService.searchCommentById(commentId).orElseThrow();
-            if (currentUser == comment.getAuthor()) {
+            Comments comments = commentService.searchCommentById(commentId).orElseThrow();
+            if (currentUser == comments.getAuthor()) {
                 commentService.deleteCommentById(commentId);
             } else {
                 log.warn("cannot delete : comment cannot be deleted by wrong access (not author)");
