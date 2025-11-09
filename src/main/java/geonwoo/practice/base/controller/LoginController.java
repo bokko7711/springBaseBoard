@@ -57,11 +57,11 @@ public class LoginController {
     @PostMapping("/join")
     public String joinFormSubmit(@Valid @ModelAttribute Member member,
                                   BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) { return "join"; }
+        if (bindingResult.hasErrors()) { return "login/join"; }
 
         service.addNewMember(member);
 
-        return "redirect:/login/login";
+        return "redirect:/login";
     }
 
     @PostMapping("logout")
@@ -70,7 +70,7 @@ public class LoginController {
         if (session != null) {
             session.invalidate();
         }
-        return "redirect:/login/login";
+        return "redirect:/login";
     }
 
     @GetMapping("/edit")
@@ -120,6 +120,6 @@ public class LoginController {
             log.info("cannot delete : there is no such member id");
         }
 
-        return "redirect:/login/login";
+        return "redirect:/login";
     }
 }
